@@ -1,0 +1,25 @@
+clickup_tools/
+├── main.py                    # Application entry point
+├── requirements.txt           # Dependencies
+├── config/
+│   └── settings.py           # Configuration constants
+├── models/
+│   ├── __init__.py
+│   ├── base_model.py         # Base data model
+│   ├── clickup_client.py     # ClickUp API client
+│   └── data_models.py        # Data structures (User, Task, TimeEntry, etc.)
+├── views/
+│   ├── __init__.py
+│   ├── base_view.py          # Base UI components
+│   ├── time_tracker_view.py  # Time tracker UI
+│   └── task_reporter_view.py # Task reporter UI
+├── controllers/
+│   ├── __init__.py
+│   ├── base_controller.py    # Base controller with common functionality
+│   ├── time_tracker_controller.py
+│   └── task_reporter_controller.py
+└── utils/
+    ├── __init__.py
+    ├── excel_exporter.py    # Excel generation utilities
+    ├── ui_helpers.py        # UI helper functions
+    └── validators.py        # Input validation
