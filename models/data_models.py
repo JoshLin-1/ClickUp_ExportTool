@@ -68,6 +68,8 @@ class Task:
     assignees: List[str] = None
     due_date: Optional[str] = None
     start_date: Optional[str] = None
+    date_created: Optional[str] = None
+    date_updated: Optional[str] = None  
     time_spent: int = 0  # milliseconds
     time_estimate: int = 0  # milliseconds
     points: int = 0

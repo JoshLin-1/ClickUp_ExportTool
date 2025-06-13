@@ -189,12 +189,29 @@ class ClickUpClient:
                 start_date = datetime.fromtimestamp(int(task_data['start_date']) / 1000).strftime('%Y-%m-%d')
             except (ValueError, TypeError):
                 pass
-        
+
+        # Parse creation and update dates
+        date_created = None
+        if task_data.get('date_created'):
+            try:
+                date_created = datetime.fromtimestamp(int(task_data['date_created'])/1000).strftime('%Y-%m-%d')
+            except(ValueError, TypeError):
+                pass
+
+        date_updated = None
+        if task_data.get('date_updated'):
+            try:
+                date_updated = datetime.fromtimestamp(int(task_data['date_updated']) / 1000).strftime('%Y-%m-%d %H:%M:%S')
+            except (ValueError, TypeError):
+                pass
+
         # Parse custom fields
         custom_fields = {}
+
+        allow_custom_fields = ['RnR','Function (功能分類)']
         for field in task_data.get('custom_fields', []):
             field_name = field.get('name', '')
-            if field_name:
+            if field_name and field_name in allow_custom_fields:
                 custom_fields[field_name] = self._extract_custom_field_value(field)
         
         return Task(
@@ -207,6 +224,8 @@ class ClickUpClient:
             assignees=assignees,
             due_date=due_date,
             start_date=start_date,
+            date_created=date_created,
+            date_updated=date_updated,
             time_spent=task_data.get('time_spent', 0) or 0,
             time_estimate=task_data.get('time_estimate', 0) or 0,
             points=task_data.get('points', 0) or 0,

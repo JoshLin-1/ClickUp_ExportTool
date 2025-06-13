@@ -28,6 +28,8 @@ COLORS = {
     'list_header_text': "FFFFFF",
     'task_header': "4472C4",
     'task_header_text': "FFFFFF",
+    'grand_total': "C5504B",      
+    'grand_total_text': "FFFFFF",
     'link': "0000FF"
 }
 

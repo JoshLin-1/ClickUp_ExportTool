@@ -156,7 +156,7 @@ class ExcelExporter:
         
         df = pd.DataFrame(summary_data)
         df.to_excel(self.writer, sheet_name='Summary', index=False)
-        self._format_header(self.writer, 'Summary')
+        self._format_summary_with_toals('Summary')
         self._auto_adjust_columns('Summary')
     
     def create_folder_task_sheet(self, folder_name: str, tasks: List[Task], 
@@ -259,6 +259,8 @@ class ExcelExporter:
         if include_dates:
             row['Due Date'] = ''
             row['Start Date'] = ''
+            row['Date Created'] = ''
+            row['Date Updated'] = ''
         
         if include_time_tracking:
             row['Hours Spent'] = ''
@@ -416,3 +418,29 @@ class ExcelExporter:
                     cell.value = "Link"
         except Exception as e:
             print(f"Warning: Could not make URLs clickable for {sheet_name}: {e}")
+
+    def _format_summary_with_toals(self, sheet_name: str):
+        """Format summary sheet with grand total highlighting"""
+        try:
+            worksheet = self.writer.sheets[sheet_name]
+
+            # Header formatting 
+            header_fill = PatternFill(start_color=COLORS['header'], end_color=COLORS['header'],fill_type="solid")
+            header_font = Font(color=COLORS['header_text'], bold=True)
+
+            # Format header row
+            for cell in worksheet[1]:
+                cell.fill = header_fill
+                cell.font = header_font
+                cell.alignment = Alignment(horizontal="center")
+
+               # Format grand total row (last row or row containing "GRAND TOTAL")
+                for row in worksheet.iter_rows(min_row=2):
+                    if row[0].value and "GRAND TOTAL" in str(row[0].value):
+                        for cell in row:
+                            cell.fill = grand_total_fill
+                            cell.font = grand_total_font
+                            cell.alignment = Alignment(horizontal="center")
+
+        except Exception as e:
+            print(f"Warning: Could not format summary sheet: {e}")
